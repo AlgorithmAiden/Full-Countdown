@@ -12,14 +12,12 @@ const ctx = canvas.getContext("2d")
 //for this code (as in code before this line), I almost always use the same stuff, so its going to stay here
 
 //for getting time as a nice string
-const targetDate = localStorage.getItem('targetDate') ?? 'April 22, 2024 00:00:00'
+const parms = new URLSearchParams(location.search)
+const targetDate = parms.get('date') ?? 'April 22, 2024 00:00:00'
 const targetTime = new Date(targetDate)
 
-//reset the date if the current one is invalid
-if (!(targetTime - 1 > 0 || targetTime - 1 <= 0)) {
-    localStorage.clear('targetDate')
-    window.location.reload()
-}
+const mainColor = parms.get('c1') ?? ''.length > 0 ? '#' + parms.get('c1') : "#0f0"
+const secondColor = parms.get('c2') ?? ''.length > 0 ? '#' + parms.get('c2') : "#090"
 function getTime(offset = 0) {
 
     function cfs(n) { return n != 1 ? 'S' : '-' }
@@ -77,10 +75,10 @@ const target = Math.round(rows / 2)
     const offset = (canvas.width - rowSize * textLength) / 2
     const greenGradient = ctx.createLinearGradient(canvas.width / 2, 0, canvas.width / 2, canvas.height)
     greenGradient.addColorStop(0, 'rgb(0,0,0)')
-    greenGradient.addColorStop(.5, 'rgb(0,200,0)')
+    greenGradient.addColorStop(.5, secondColor)
     greenGradient.addColorStop(1, 'rgb(0,0,0)')
     for (let index = 0; index < rows; index++) {
-        if (index - target == 0) ctx.fillStyle = 'rgb(0,255,0)'
+        if (index - target == 0) ctx.fillStyle = mainColor
         else ctx.fillStyle = greenGradient
         const text = getTime((index - target) * 1000).split('')
         for (let subindex = 0; subindex < text.length; subindex++) {
@@ -126,12 +124,4 @@ document.addEventListener('click', e => {
     }
 })
 
-//listen for keys
-document.addEventListener('keypress', e => {
-    //if the text box is open and the key is enter
-    if (textOpen && e.key == 'Enter') {
-        //set the new date, and reload
-        localStorage.setItem('targetDate', (document.getElementById('textInput').value))
-        window.location.reload()
-    }
-})
+//http://127.0.0.1:5500/?c1=0f0&c2=090&date=April%2022,%202024%2000:00:00
