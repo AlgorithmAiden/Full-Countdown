@@ -88,40 +88,4 @@ const target = Math.round(rows / 2)
     requestAnimationFrame(render)
 })()
 
-//listen for clicks
-let textOpen = false
-let clicks = 0
-document.addEventListener('click', e => {
-    if (!textOpen) {
-        clicks++
-        setTimeout(() => clicks--, 1000)
-        if (clicks >= 3) {
-            textOpen = true
-
-            //create a text element
-            const newInput = document.createElement('input')
-            newInput.value = targetDate
-            newInput.type = 'text'
-            newInput.id = 'textInput'
-
-            //style the input to fill the screen and appear above the canvas
-            newInput.style.position = 'absolute'
-            newInput.style.top = '0'
-            newInput.style.left = '0'
-            newInput.style.width = '100%'
-            newInput.style.height = '100%'
-            newInput.style.zIndex = '999'
-
-            //set the theme
-            newInput.style.backgroundColor = 'black'
-            newInput.style.color = 'darkgreen'
-            newInput.style.fontSize = '24px'
-            newInput.style.textAlign = 'center'
-
-            //add it
-            document.body.appendChild(newInput)
-        }
-    }
-})
-
 //http://127.0.0.1:5500/?c1=0f0&c2=090&date=April%2022,%202024%2000:00:00
